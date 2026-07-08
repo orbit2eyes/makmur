@@ -214,7 +214,7 @@ class AuthControllerTest {
     }
 
     @Test
-    void j_register_noAuth_returns403() {
+    void j_register_noAuth_returns401() {
         Map<String, String> body = new LinkedHashMap<>();
         body.put("username", "someuser");
         body.put("password", "somepass");
@@ -225,7 +225,7 @@ class AuthControllerTest {
                 authRequest(body, null), // no auth
                 Map.class);
 
-        assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+        assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
     }
 
     // ── Helpers ─────────────────────────────────────────────────────────

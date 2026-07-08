@@ -333,14 +333,14 @@ class ProductControllerTest {
     }
 
     @Test
-    void q_scope_noJwt_returns403() {
+    void q_scope_noJwt_returns401() {
         ResponseEntity<Map> resp = rest.exchange(
                 baseUrl + "/api/products",
                 HttpMethod.GET,
                 authRequestWithToken(null, null),
                 Map.class);
 
-        assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+        assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
     }
 
     // ── Helpers ─────────────────────────────────────────────────────────

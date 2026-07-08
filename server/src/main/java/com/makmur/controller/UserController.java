@@ -124,10 +124,10 @@ public class UserController {
         authService.requireRole("admin", "manager");
 
         String newPassword = body.get("new_password");
-        if (newPassword == null || newPassword.isBlank()) {
+        if (newPassword == null || newPassword.length() < 8) {
             Map<String, Object> err = new LinkedHashMap<>();
-            err.put("error", "validation_error");
-            err.put("message", "new_password is required");
+            err.put("error", "unprocessable_entity");
+            err.put("message", "Password must be at least 8 characters");
             return ResponseEntity.status(422).body(err);
         }
 

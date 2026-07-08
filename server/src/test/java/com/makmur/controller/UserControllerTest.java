@@ -127,14 +127,14 @@ class UserControllerTest {
     }
 
     @Test
-    void d_listUsers_noAuth_returns403() {
+    void d_listUsers_noAuth_returns401() {
         ResponseEntity<Map> resp = rest.exchange(
                 baseUrl + "/api/users",
                 HttpMethod.GET,
                 authRequest(null, null),
                 Map.class);
 
-        assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+        assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
     }
 
     // ── Create users ────────────────────────────────────────────────────

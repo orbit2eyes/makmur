@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "concurrently -n server,client \"cd server && mvn spring-boot:run\" \"npm run dev --prefix client\"",
     "build": "npm run build --prefix client && cd server && mvn package -DskipTests",
-    "start": "java -jar server/target/makmur-server-1.0.0.jar"
+    "start": "cd server && JWT_SECRET=${JWT_SECRET:-test-only-min-32-bytes-long-test-key} java -jar target/makmur-server-1.0.0.jar --spring.profiles.active=prod"
   },
   "devDependencies": {
     "concurrently": "^9.2.3"

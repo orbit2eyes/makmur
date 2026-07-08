@@ -54,12 +54,15 @@ export default function UserList() {
   }
 
   const handleResetPassword = async (u: User) => {
-    const ok = window.confirm(`Reset password for "${u.username}"?`)
-    if (!ok) return
+    const newPassword = window.prompt(`Enter new password for "${u.username}":`)
+    if (!newPassword) return
+    if (newPassword.length < 8) {
+      setError('Password must be at least 8 characters')
+      return
+    }
     try {
-      const newPassword = Math.random().toString(36).slice(2, 10)
       await resetUserPassword(u.id, { new_password: newPassword })
-      setNotification(`Password reset for ${u.username}. New password: ${newPassword}`)
+      setNotification(`Password reset for ${u.username}`)
       setTimeout(() => setNotification(''), 8000)
     } catch (err: any) {
       setError(err.message || 'Failed to reset password')

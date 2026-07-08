@@ -71,7 +71,7 @@ function MainApp() {
     if (product) {
       setSelectedProduct(product)
       setView('detail')
-      setAutoReturn(3)
+      setAutoReturn(2)
     } else {
       setScannedBarcode(barcode)
       setView('create')

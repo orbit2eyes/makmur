@@ -30,9 +30,7 @@ export default function SetupPage() {
       .finally(() => setLoading(false))
   }, [])
 
-  const qrUrl = qrToken
-    ? `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(window.location.origin + '/setup?token=' + qrToken)}`
-    : ''
+  const qrUrl = qrToken ? '/api/setup/qr' : ''
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
