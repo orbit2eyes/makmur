@@ -1,3 +1,27 @@
 .pi
 node_modules
 AGENTS.md
+
+# Build outputs
+client/dist/
+server/target/
+server/data/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+
+# TLS (regenerate per dev)
+server/src/main/resources/keystore.p12
+
+# Logs
+*.log
