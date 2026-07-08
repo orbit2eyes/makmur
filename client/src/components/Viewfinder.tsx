@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { BrowserMultiFormatReader } from '@zxing/library'
+import ManualEntry from './ManualEntry'
 
 interface ViewfinderProps {
   onScan: (barcode: string) => void
@@ -15,7 +15,7 @@ export default function Viewfinder({ onScan, onError }: ViewfinderProps) {
 
   useEffect(() => {
     let cancelled = false
-    let zxingReader: BrowserMultiFormatReader | null = null
+    let zxingReader: any = null
     let raf: number
     const { BarcodeDetector: NativeDetector } = window as any
     const hasNative = typeof NativeDetector === 'function'
@@ -71,14 +71,15 @@ export default function Viewfinder({ onScan, onError }: ViewfinderProps) {
       raf = requestAnimationFrame(poll)
     }
 
-    function startZxing() {
+    async function startZxing() {
+      const { BrowserMultiFormatReader } = await import('@zxing/library')
       zxingReader = new BrowserMultiFormatReader()
       const wait = setInterval(() => {
         if (cancelled || scannedRef.current) { clearInterval(wait); return }
         const video = videoRef.current
         if (!video || video.readyState < 2) return
         clearInterval(wait)
-        zxingReader!.decodeFromVideoElement(video, (result, err) => {
+        zxingReader!.decodeFromVideoElement(video, (result: any, err: any) => {
           if (cancelled || scannedRef.current || !result) return
           scannedRef.current = true
           setDetected(true)
@@ -101,6 +102,7 @@ export default function Viewfinder({ onScan, onError }: ViewfinderProps) {
       {cameraError ? (
         <div className="viewfinder-error">
           <p>{cameraError}</p>
+          <ManualEntry onLookup={(product) => onScan(product.barcode)} />
         </div>
       ) : (
         <video ref={videoRef} autoPlay playsInline className="viewfinder-video" />

@@ -1,0 +1,25 @@
+name: Sync ISSUES.md to GitHub Issues
+
+on:
+  push:
+    branches: [dev, main]
+    paths:
+      - 'openspec/changes/makmur-0/ISSUES.md'
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    # Prevent loop: skip if commit was made by the other sync workflow
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run ISSUES.md -> GitHub sync
+        run: |
+          bash .github/scripts/sync-md-to-issues.sh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
-import { fetchUsers, createUser, deactivateUser, reactivateUser } from '../api'
+import { fetchUsers, createUser, deactivateUser, reactivateUser, resetUserPassword } from '../api'
 import type { User } from '../types'
 
 export default function UserList() {
@@ -16,6 +16,7 @@ export default function UserList() {
   const [role, setRole] = useState<'staff' | 'manager'>('staff')
   const [submitting, setSubmitting] = useState(false)
   const [formError, setFormError] = useState('')
+  const [notification, setNotification] = useState('')
 
   const loadUsers = () => {
     setLoading(true)
@@ -32,8 +33,8 @@ export default function UserList() {
     e.preventDefault()
     setFormError('')
 
-    if (password.length < 6) {
-      setFormError('Password must be at least 6 characters')
+    if (password.length < 8) {
+      setFormError('Password must be at least 8 characters')
       return
     }
 
@@ -49,6 +50,19 @@ export default function UserList() {
       setFormError(err.message || 'Failed to create user')
     } finally {
       setSubmitting(false)
+    }
+  }
+
+  const handleResetPassword = async (u: User) => {
+    const ok = window.confirm(`Reset password for "${u.username}"?`)
+    if (!ok) return
+    try {
+      const newPassword = Math.random().toString(36).slice(2, 10)
+      await resetUserPassword(u.id, { new_password: newPassword })
+      setNotification(`Password reset for ${u.username}. New password: ${newPassword}`)
+      setTimeout(() => setNotification(''), 8000)
+    } catch (err: any) {
+      setError(err.message || 'Failed to reset password')
     }
   }
 
@@ -122,6 +136,7 @@ export default function UserList() {
         </form>
       )}
 
+      {notification && <div className="success-banner">{notification}</div>}
       {error && <div className="error-banner">{error}</div>}
 
       {loading ? (
@@ -153,7 +168,13 @@ export default function UserList() {
                   <td className="user-cell-date">
                     {new Date(u.created_at).toLocaleDateString()}
                   </td>
-                  <td>
+                  <td className="user-actions">
+                    <button
+                      className="btn btn-sm btn-secondary"
+                      onClick={() => handleResetPassword(u)}
+                    >
+                      Reset Password
+                    </button>
                     <button
                       className={`btn btn-sm ${u.active ? 'btn-danger' : 'btn-secondary'}`}
                       onClick={() => handleToggleActive(u)}

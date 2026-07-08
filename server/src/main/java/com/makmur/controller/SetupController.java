@@ -1,13 +1,21 @@
 package com.makmur.controller;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import com.makmur.config.SetupTokenStore;
 import com.makmur.entity.User;
 import com.makmur.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayOutputStream;
 import java.time.Instant;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -58,6 +66,42 @@ public class SetupController {
         body.put("token", token);
         body.put("expires_at", expiresAt != null ? expiresAt.toString() : null);
         return ResponseEntity.ok(body);
+    }
+
+    @GetMapping("/qr")
+    public ResponseEntity<?> getQrCode(@RequestParam(value = "data", required = false) String data,
+                                       HttpServletRequest request) {
+        String qrData = data;
+        if (qrData == null || qrData.isBlank()) {
+            if (countAdmins() > 0) {
+                Map<String, Object> err = new LinkedHashMap<>();
+                err.put("error", "missing_data");
+                err.put("message", "data parameter is required when setup is complete");
+                return ResponseEntity.status(400).body(err);
+            }
+            String token = tokenStore.getToken();
+            if (token == null) {
+                tokenStore.generateToken();
+                token = tokenStore.getToken();
+            }
+            String baseUrl = request.getRequestURL().toString().replace("/api/setup/qr", "");
+            qrData = baseUrl + "/setup?token=" + token;
+        }
+
+        try {
+            QRCodeWriter writer = new QRCodeWriter();
+            BitMatrix matrix = writer.encode(qrData, BarcodeFormat.QR_CODE, 300, 300);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            MatrixToImageWriter.writeToStream(matrix, "PNG", baos);
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_TYPE, MediaType.IMAGE_PNG_VALUE)
+                    .body(baos.toByteArray());
+        } catch (Exception e) {
+            Map<String, Object> err = new LinkedHashMap<>();
+            err.put("error", "qr_generation_failed");
+            err.put("message", e.getMessage());
+            return ResponseEntity.status(500).body(err);
+        }
     }
 
     @PostMapping("/register")

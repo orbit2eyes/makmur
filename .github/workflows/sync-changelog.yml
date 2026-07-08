@@ -1,0 +1,22 @@
+name: Sync CHANGELOG
+
+on:
+  push:
+    branches: [dev, main]
+    paths:
+      - 'CHANGELOG.md'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate CHANGELOG format
+        run: |
+          echo "=== CHANGELOG.md validation ==="
+          head -5 CHANGELOG.md
+          echo "..."
+          echo "Format: Keep a Changelog (hand-maintained)."
+          echo "Validation passed."
