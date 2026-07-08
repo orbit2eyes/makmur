@@ -1,0 +1,15 @@
+{
+  "name": "makmur",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -n server,client \"cd server && mvn spring-boot:run\" \"npm run dev --prefix client\"",
+    "build": "npm run build --prefix client && cd server && mvn package -DskipTests",
+    "start": "java -jar server/target/makmur-server-1.0.0.jar"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.3"
+  },
+  "dependencies": {
+    "gh": "^2.8.9"
+  }
+}

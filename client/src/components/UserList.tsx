@@ -1,0 +1,174 @@
+import { useState, useEffect } from 'react'
+import { useAuth } from '../context/AuthContext'
+import { fetchUsers, createUser, deactivateUser, reactivateUser } from '../api'
+import type { User } from '../types'
+
+export default function UserList() {
+  const { user: currentUser } = useAuth()
+  const [users, setUsers] = useState<User[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [showForm, setShowForm] = useState(false)
+
+  // Create form state
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [role, setRole] = useState<'staff' | 'manager'>('staff')
+  const [submitting, setSubmitting] = useState(false)
+  const [formError, setFormError] = useState('')
+
+  const loadUsers = () => {
+    setLoading(true)
+    setError('')
+    fetchUsers()
+      .then(setUsers)
+      .catch(err => setError(err.message || 'Failed to load users'))
+      .finally(() => setLoading(false))
+  }
+
+  useEffect(loadUsers, [])
+
+  const handleCreate = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setFormError('')
+
+    if (password.length < 6) {
+      setFormError('Password must be at least 6 characters')
+      return
+    }
+
+    setSubmitting(true)
+    try {
+      await createUser({ username, password, role })
+      setUsername('')
+      setPassword('')
+      setRole('staff')
+      setShowForm(false)
+      loadUsers()
+    } catch (err: any) {
+      setFormError(err.message || 'Failed to create user')
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  const handleToggleActive = async (u: User) => {
+    try {
+      if (u.active) {
+        await deactivateUser(u.id)
+      } else {
+        await reactivateUser(u.id)
+      }
+      loadUsers()
+    } catch (err: any) {
+      setError(err.message || 'Failed to update user')
+    }
+  }
+
+  const roleOptions = currentUser?.role === 'admin'
+    ? (['staff', 'manager'] as const)
+    : (['staff'] as const)
+
+  return (
+    <div className="user-management">
+      <div className="user-header">
+        <h2 className="user-heading">Staff Management</h2>
+        <button className="btn btn-primary" onClick={() => setShowForm(!showForm)}>
+          {showForm ? 'Cancel' : 'Add User'}
+        </button>
+      </div>
+
+      {showForm && (
+        <form onSubmit={handleCreate} className="user-form">
+          {formError && <div className="login-error">{formError}</div>}
+          <div className="form-group">
+            <label htmlFor="new-username">Username</label>
+            <input
+              id="new-username"
+              className="form-input"
+              type="text"
+              value={username}
+              onChange={e => setUsername(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="new-password">Password</label>
+            <input
+              id="new-password"
+              className="form-input"
+              type="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="new-role">Role</label>
+            <select
+              id="new-role"
+              className="form-input"
+              value={role}
+              onChange={e => setRole(e.target.value as 'staff' | 'manager')}
+            >
+              {roleOptions.map(r => (
+                <option key={r} value={r}>{r.charAt(0).toUpperCase() + r.slice(1)}</option>
+              ))}
+            </select>
+          </div>
+          <button className="btn btn-primary" type="submit" disabled={submitting}>
+            {submitting ? 'Creating…' : 'Create User'}
+          </button>
+        </form>
+      )}
+
+      {error && <div className="error-banner">{error}</div>}
+
+      {loading ? (
+        <div className="loading">Loading users…</div>
+      ) : (
+        <div className="user-table-wrapper">
+          <table className="user-table">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map(u => (
+                <tr key={u.id} className="user-row">
+                  <td className="user-cell-name">{u.username}</td>
+                  <td>
+                    <span className={`user-role-badge user-role-${u.role}`}>{u.role}</span>
+                  </td>
+                  <td>
+                    <span className={`user-status-dot ${u.active ? 'user-active' : 'user-inactive'}`}>
+                      {u.active ? 'Active' : 'Inactive'}
+                    </span>
+                  </td>
+                  <td className="user-cell-date">
+                    {new Date(u.created_at).toLocaleDateString()}
+                  </td>
+                  <td>
+                    <button
+                      className={`btn btn-sm ${u.active ? 'btn-danger' : 'btn-secondary'}`}
+                      onClick={() => handleToggleActive(u)}
+                      disabled={u.id === currentUser?.id}
+                      title={u.id === currentUser?.id ? 'Cannot modify yourself' : ''}
+                    >
+                      {u.active ? 'Deactivate' : 'Reactivate'}
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  )
+}
