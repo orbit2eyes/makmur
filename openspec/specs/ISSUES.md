@@ -1,7 +1,7 @@
 # Issues — Makmur
 
 > Repository: orbit2eyes/makmur
-> Consolidated from archived changes: makmur-0, fix-scan-camera
+> Consolidated from all archived changes: makmur-0, fix-scan-camera, fix-change-currency-and-language, fix-input-barcode
 > Auto-synced: issues from archive changes are listed below.
 
 ---
@@ -90,6 +90,34 @@ Single 24h JWT token with no refresh flow. Staff mid-scanning when token expires
 ---
 
 ## Closed / Resolved Issues
+
+### #29: Change UI language & currency to Indonesian (fix-change-currency-and-language)
+
+- **Status**: resolved
+- **Closed**: 2026-07-10
+- **Labels**: enhancement, priority-p1, frontend
+- **Created**: 2026-07-10
+- **Source**: fix-change-currency-and-language
+
+All UI text changed to Indonesian. Prices display as `Rp` with `.` thousands separator. Error messages translated on both frontend and backend. No new dependencies or schema changes.
+
+**Fix**: Translated all user-facing text in React components, server error messages, and price format to Indonesian Rupiah standard.
+
+---
+
+### #28: Action-choice dialog after barcode scan (fix-input-barcode)
+
+- **Status**: resolved
+- **Closed**: 2026-07-10
+- **Labels**: enhancement, priority-p1, scan
+- **Created**: 2026-07-10
+- **Source**: fix-input-barcode
+
+After scanning a barcode, app jumped directly to detail or create view with no confirmation dialog. Staff had no choice of action before navigating.
+
+**Fix**: Added ScanResultDialog component with two modes — found product (3 buttons: Tambah 1 stok / Lihat detail / Pindai lagi) and unknown barcode (2 buttons: Tambah produk baru / Pindai lagi). Removed auto-dismiss timer.
+
+---
 
 ### #27: Build artifacts tracked in git
 
