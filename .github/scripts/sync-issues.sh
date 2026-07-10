@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# Sync GitHub Issues -> openspec/changes/makmur-0/ISSUES.md
+# Sync GitHub Issues -> openspec/specs/ISSUES.md
 # Usage: GITHUB_TOKEN=<token> ./sync-issues.sh
 # Run from repo root.
 
 set -euo pipefail
 
 REPO="orbit2eyes/makmur"
-ISSUES_FILE="openspec/changes/makmur-0/ISSUES.md"
+ISSUES_FILE="openspec/specs/ISSUES.md"
 
 echo "Fetching issues from $REPO..."
 
@@ -19,7 +19,7 @@ gh issue list --repo "$REPO" --state closed --json number,title,labels,body,crea
 echo "Generating $ISSUES_FILE..."
 
 cat > "$ISSUES_FILE" << 'HEADER'
-# Issues — Makmur v1 (makmur-0)
+# Issues — Makmur
 
 > Sync target: GitHub Issues (repo: orbit2eyes/makmur)
 > Auto-synced bidirectionally: GitHub Issues <-> ISSUES.md

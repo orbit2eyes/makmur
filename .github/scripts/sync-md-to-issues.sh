@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # Sync ISSUES.md -> GitHub Issues
-# Parses openspec/changes/makmur-0/ISSUES.md and creates/updates GitHub Issues.
+# Parses openspec/specs/ISSUES.md and creates/updates GitHub Issues.
 # Usage: GITHUB_TOKEN=<token> ./sync-md-to-issues.sh
 # Run from repo root.
 
 set -euo pipefail
 
 REPO="orbit2eyes/makmur"
-ISSUES_FILE="openspec/changes/makmur-0/ISSUES.md"
+ISSUES_FILE="openspec/specs/ISSUES.md"
 
 if [ ! -f "$ISSUES_FILE" ]; then
   echo "ERROR: $ISSUES_FILE not found. Run from repo root."
