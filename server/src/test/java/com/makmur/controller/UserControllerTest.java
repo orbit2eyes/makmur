@@ -294,7 +294,7 @@ class UserControllerTest {
                 Map.class);
 
         assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(resp.getBody()).containsEntry("message", "Password updated");
+        assertThat(resp.getBody()).containsEntry("message", "Kata sandi berhasil diperbarui");
 
         // Verify login with new password works
         Map<String, String> loginBody = new LinkedHashMap<>();

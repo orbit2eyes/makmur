@@ -66,7 +66,7 @@ public class UserController {
         if (username == null || password == null || username.isBlank() || password.isBlank()) {
             Map<String, Object> err = new LinkedHashMap<>();
             err.put("error", "validation_error");
-            err.put("message", "Username and password are required");
+            err.put("message", "Nama pengguna dan kata sandi wajib diisi");
             return ResponseEntity.status(422).body(err);
         }
 
@@ -86,7 +86,7 @@ public class UserController {
         if (userRepository.findByUsername(username).isPresent()) {
             Map<String, Object> err = new LinkedHashMap<>();
             err.put("error", "duplicate_username");
-            err.put("message", "Username " + username + " already exists");
+            err.put("message", "Nama pengguna " + username + " sudah ada");
             return ResponseEntity.status(409).body(err);
         }
 
@@ -127,13 +127,13 @@ public class UserController {
         if (newPassword == null || newPassword.length() < 8) {
             Map<String, Object> err = new LinkedHashMap<>();
             err.put("error", "unprocessable_entity");
-            err.put("message", "Password must be at least 8 characters");
+            err.put("message", "Kata sandi minimal 8 karakter");
             return ResponseEntity.status(422).body(err);
         }
 
         checkTargetRole(id);
         userRepository.updatePassword(id, passwordEncoder.encode(newPassword));
-        return ResponseEntity.ok(Map.of("message", "Password updated"));
+        return ResponseEntity.ok(Map.of("message", "Kata sandi berhasil diperbarui"));
     }
 
     /**
@@ -153,10 +153,10 @@ public class UserController {
         ).orElse(null);
 
         if (target == null) {
-            throw new ForbiddenException("User not found");
+            throw new ForbiddenException("Pengguna tidak ditemukan");
         }
         if (!"staff".equals(target.getRole())) {
-            throw new ForbiddenException("You can only manage staff accounts");
+            throw new ForbiddenException("Anda hanya dapat mengelola akun staf");
         }
     }
 }

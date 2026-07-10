@@ -13,7 +13,7 @@ export default function ManualEntry({ onLookup }: ManualEntryProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!/^\d{13}$/.test(barcode)) {
-      setError('Enter a valid 13-digit EAN-13 barcode')
+      setError('Masukkan barcode EAN-13 13 digit yang valid')
       return
     }
     setError('')
@@ -21,7 +21,7 @@ export default function ManualEntry({ onLookup }: ManualEntryProps) {
     if (product) {
       onLookup(product)
     } else {
-      setError('Product not found')
+      setError('Produk tidak ditemukan')
     }
   }
 
@@ -29,12 +29,12 @@ export default function ManualEntry({ onLookup }: ManualEntryProps) {
     <form className="manual-entry" onSubmit={handleSubmit}>
       <input
         type="text"
-        placeholder="Enter barcode number"
+        placeholder="Masukkan nomor barcode"
         value={barcode}
         onChange={e => setBarcode(e.target.value.replace(/\D/g, '').slice(0, 13))}
         className="form-input"
       />
-      <button type="submit" className="btn btn-primary">Look Up</button>
+      <button type="submit" className="btn btn-primary">Cari</button>
       {error && <span className="form-error">{error}</span>}
     </form>
   )

@@ -18,11 +18,11 @@ export default function ProductForm({ barcode, onCreated, onCancel }: ProductFor
 
   const validate = () => {
     const e: Record<string, string> = {}
-    if (!name.trim()) e.name = 'Name is required'
+    if (!name.trim()) e.name = 'Nama produk wajib diisi'
     const p = Number(price)
-    if (!price || isNaN(p) || p <= 0) e.price = 'Price must be a positive number'
+    if (!price || isNaN(p) || p <= 0) e.price = 'Harga harus berupa angka positif'
     const s = Number(stock)
-    if (isNaN(s) || !Number.isInteger(s) || s < 0) e.stock = 'Stock must be a non-negative integer'
+    if (isNaN(s) || !Number.isInteger(s) || s < 0) e.stock = 'Stok harus berupa bilangan bulat non-negatif'
     setErrors(e)
     return Object.keys(e).length === 0
   }
@@ -53,31 +53,31 @@ export default function ProductForm({ barcode, onCreated, onCancel }: ProductFor
 
   return (
     <form className="product-form" onSubmit={handleSubmit}>
-      <h2>Add Product</h2>
+      <h2>Tambah Produk</h2>
       <div className="form-group">
         <label>Barcode</label>
         <input type="text" value={barcode || ''} disabled className="form-input" />
       </div>
       <div className="form-group">
-        <label>Name *</label>
+        <label>Nama Produk *</label>
         <input type="text" value={name} onChange={e => setName(e.target.value)} className="form-input" />
         {errors.name && <span className="form-error">{errors.name}</span>}
       </div>
       <div className="form-group">
-        <label>Price *</label>
+        <label>Harga *</label>
         <input type="number" step="0.01" min="0.01" value={price} onChange={e => setPrice(e.target.value)} className="form-input" />
         {errors.price && <span className="form-error">{errors.price}</span>}
       </div>
       <div className="form-group">
-        <label>Initial Stock</label>
+        <label>Stok Awal</label>
         <input type="number" min="0" step="1" value={stock} onChange={e => setStock(e.target.value)} className="form-input" />
         {errors.stock && <span className="form-error">{errors.stock}</span>}
       </div>
       <div className="form-actions">
         <button type="submit" className="btn btn-primary" disabled={submitting}>
-          {submitting ? 'Saving...' : 'Save'}
+          {submitting ? 'Menyimpan...' : 'Simpan'}
         </button>
-        <button type="button" className="btn btn-secondary" onClick={onCancel}>Cancel</button>
+        <button type="button" className="btn btn-secondary" onClick={onCancel}>Batal</button>
       </div>
     </form>
   )

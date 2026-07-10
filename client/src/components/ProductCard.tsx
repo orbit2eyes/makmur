@@ -1,4 +1,5 @@
 import type { Product } from '../types'
+import { formatPrice } from '../utils'
 
 interface ProductCardProps {
   product: Product
@@ -14,12 +15,12 @@ export default function ProductCard({ product }: ProductCardProps) {
           <span className="detail-value">{product.barcode}</span>
         </div>
         <div className="detail-row">
-          <span className="detail-label">Stock</span>
+          <span className="detail-label">Stok</span>
           <span className="detail-value detail-stock">{product.stock}</span>
         </div>
         <div className="detail-row">
-          <span className="detail-label">Price</span>
-          <span className="detail-value">${Number(product.price).toFixed(2)}</span>
+          <span className="detail-label">Harga</span>
+          <span className="detail-value">{formatPrice(product.price)}</span>
         </div>
       </div>
     </div>

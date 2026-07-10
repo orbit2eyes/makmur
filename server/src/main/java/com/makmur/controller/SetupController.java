@@ -49,7 +49,7 @@ public class SetupController {
         if (countAdmins() > 0) {
             Map<String, Object> err = new LinkedHashMap<>();
             err.put("error", "already_setup");
-            err.put("message", "Admin account already exists");
+            err.put("message", "Akun admin sudah ada");
             return ResponseEntity.status(403).body(err);
         }
 
@@ -76,7 +76,7 @@ public class SetupController {
             if (countAdmins() > 0) {
                 Map<String, Object> err = new LinkedHashMap<>();
                 err.put("error", "missing_data");
-                err.put("message", "data parameter is required when setup is complete");
+                err.put("message", "Parameter data diperlukan saat setup sudah selesai");
                 return ResponseEntity.status(400).body(err);
             }
             String token = tokenStore.getToken();
@@ -107,6 +107,7 @@ public class SetupController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody Map<String, String> body) {
         String token = body.get("token");
+
         String username = body.get("username");
         String password = body.get("password");
 
@@ -114,21 +115,21 @@ public class SetupController {
         if (token == null || token.isBlank()) {
             Map<String, Object> err = new LinkedHashMap<>();
             err.put("error", "validation_error");
-            err.put("message", "Setup token is required");
+            err.put("message", "Token pengaturan diperlukan");
             return ResponseEntity.status(422).body(err);
         }
 
         if (username == null || username.isBlank()) {
             Map<String, Object> err = new LinkedHashMap<>();
             err.put("error", "validation_error");
-            err.put("message", "Username is required");
+            err.put("message", "Nama pengguna wajib diisi");
             return ResponseEntity.status(422).body(err);
         }
 
         if (password == null || password.length() < 8) {
             Map<String, Object> err = new LinkedHashMap<>();
             err.put("error", "validation_error");
-            err.put("message", "Password must be at least 8 characters");
+            err.put("message", "Kata sandi minimal 8 karakter");
             return ResponseEntity.status(422).body(err);
         }
 
@@ -145,7 +146,7 @@ public class SetupController {
             tokenStore.invalidate(token);
             Map<String, Object> err = new LinkedHashMap<>();
             err.put("error", "already_setup");
-            err.put("message", "Admin account already exists");
+            err.put("message", "Akun admin sudah ada");
             return ResponseEntity.status(403).body(err);
         }
 
@@ -153,7 +154,7 @@ public class SetupController {
         if (userRepository.findByUsername(username).isPresent()) {
             Map<String, Object> err = new LinkedHashMap<>();
             err.put("error", "duplicate_username");
-            err.put("message", "Username " + username + " already exists");
+            err.put("message", "Nama pengguna " + username + " sudah ada");
             return ResponseEntity.status(409).body(err);
         }
 

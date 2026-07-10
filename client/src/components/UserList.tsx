@@ -23,7 +23,7 @@ export default function UserList() {
     setError('')
     fetchUsers()
       .then(setUsers)
-      .catch(err => setError(err.message || 'Failed to load users'))
+      .catch(err => setError(err.message || 'Gagal memuat pengguna'))
       .finally(() => setLoading(false))
   }
 
@@ -34,7 +34,7 @@ export default function UserList() {
     setFormError('')
 
     if (password.length < 8) {
-      setFormError('Password must be at least 8 characters')
+      setFormError('Kata sandi minimal 8 karakter')
       return
     }
 
@@ -47,7 +47,7 @@ export default function UserList() {
       setShowForm(false)
       loadUsers()
     } catch (err: any) {
-      setFormError(err.message || 'Failed to create user')
+      setFormError(err.message || 'Gagal membuat pengguna')
     } finally {
       setSubmitting(false)
     }
@@ -57,7 +57,7 @@ export default function UserList() {
     const newPassword = window.prompt(`Enter new password for "${u.username}":`)
     if (!newPassword) return
     if (newPassword.length < 8) {
-      setError('Password must be at least 8 characters')
+      setError('Kata sandi minimal 8 karakter')
       return
     }
     try {
@@ -65,7 +65,7 @@ export default function UserList() {
       setNotification(`Password reset for ${u.username}`)
       setTimeout(() => setNotification(''), 8000)
     } catch (err: any) {
-      setError(err.message || 'Failed to reset password')
+      setError(err.message || 'Gagal mengatur ulang kata sandi')
     }
   }
 
@@ -78,7 +78,7 @@ export default function UserList() {
       }
       loadUsers()
     } catch (err: any) {
-      setError(err.message || 'Failed to update user')
+      setError(err.message || 'Gagal memperbarui pengguna')
     }
   }
 
@@ -89,9 +89,9 @@ export default function UserList() {
   return (
     <div className="user-management">
       <div className="user-header">
-        <h2 className="user-heading">Staff Management</h2>
+        <h2 className="user-heading">Manajemen Staf</h2>
         <button className="btn btn-primary" onClick={() => setShowForm(!showForm)}>
-          {showForm ? 'Cancel' : 'Add User'}
+          {showForm ? 'Batal' : 'Tambah Pengguna'}
         </button>
       </div>
 
@@ -99,7 +99,7 @@ export default function UserList() {
         <form onSubmit={handleCreate} className="user-form">
           {formError && <div className="login-error">{formError}</div>}
           <div className="form-group">
-            <label htmlFor="new-username">Username</label>
+            <label htmlFor="new-username">Nama Pengguna</label>
             <input
               id="new-username"
               className="form-input"
@@ -110,7 +110,7 @@ export default function UserList() {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="new-password">Password</label>
+            <label htmlFor="new-password">Kata Sandi</label>
             <input
               id="new-password"
               className="form-input"
@@ -121,7 +121,7 @@ export default function UserList() {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="new-role">Role</label>
+            <label htmlFor="new-role">Peran</label>
             <select
               id="new-role"
               className="form-input"
@@ -134,7 +134,7 @@ export default function UserList() {
             </select>
           </div>
           <button className="btn btn-primary" type="submit" disabled={submitting}>
-            {submitting ? 'Creating…' : 'Create User'}
+            {submitting ? 'Membuat...' : 'Buat Pengguna'}
           </button>
         </form>
       )}
@@ -143,16 +143,16 @@ export default function UserList() {
       {error && <div className="error-banner">{error}</div>}
 
       {loading ? (
-        <div className="loading">Loading users…</div>
+        <div className="loading">Memuat pengguna...</div>
       ) : (
         <div className="user-table-wrapper">
           <table className="user-table">
             <thead>
               <tr>
-                <th>Username</th>
-                <th>Role</th>
+                <th>Nama Pengguna</th>
+                <th>Peran</th>
                 <th>Status</th>
-                <th>Created</th>
+                <th>Dibuat</th>
                 <th></th>
               </tr>
             </thead>
@@ -165,7 +165,7 @@ export default function UserList() {
                   </td>
                   <td>
                     <span className={`user-status-dot ${u.active ? 'user-active' : 'user-inactive'}`}>
-                      {u.active ? 'Active' : 'Inactive'}
+                      {u.active ? 'Aktif' : 'Nonaktif'}
                     </span>
                   </td>
                   <td className="user-cell-date">
@@ -176,15 +176,15 @@ export default function UserList() {
                       className="btn btn-sm btn-secondary"
                       onClick={() => handleResetPassword(u)}
                     >
-                      Reset Password
+                      Atur Ulang Kata Sandi
                     </button>
                     <button
                       className={`btn btn-sm ${u.active ? 'btn-danger' : 'btn-secondary'}`}
                       onClick={() => handleToggleActive(u)}
                       disabled={u.id === currentUser?.id}
-                      title={u.id === currentUser?.id ? 'Cannot modify yourself' : ''}
+                      title={u.id === currentUser?.id ? 'Tidak dapat mengubah diri sendiri' : ''}
                     >
-                      {u.active ? 'Deactivate' : 'Reactivate'}
+                      {u.active ? 'Nonaktifkan' : 'Aktifkan'}
                     </button>
                   </td>
                 </tr>

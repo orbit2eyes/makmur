@@ -5,17 +5,17 @@ const TIMEOUT_MS = 10_000
 
 const CAMERA_ERRORS: Record<string, string> = {
   NotAllowedError:
-    'Camera permission denied. Enable camera access in browser settings, or use manual entry below.',
+    'Izin kamera ditolak. Aktifkan akses kamera di pengaturan browser, atau gunakan entri manual di bawah.',
   NotFoundError:
-    'No camera found on this device. Use manual entry below to enter the barcode.',
+    'Tidak ada kamera yang terdeteksi di perangkat ini. Gunakan entri manual untuk memasukkan barcode.',
   NotReadableError:
-    'Camera is in use by another application or browser tab. Close the other tab and try again.',
+    'Kamera sedang digunakan oleh aplikasi atau tab lain. Tutup tab lain dan coba lagi.',
   SecurityError:
-    'Camera requires a secure connection (HTTPS). Contact your IT team to enable HTTPS on this site.',
+    'Kamera memerlukan koneksi aman (HTTPS). Hubungi tim IT untuk mengaktifkan HTTPS di situs ini.',
   TIMEOUT:
-    'Camera stream is taking too long to start. Try reloading the page or use manual entry below.',
+    'Stream kamera terlalu lama. Coba muat ulang halaman atau gunakan entri manual di bawah.',
   UNKNOWN:
-    'Camera unavailable. Use manual entry below.',
+    'Kamera tidak tersedia. Gunakan entri manual di bawah.',
 }
 
 interface ViewfinderProps {

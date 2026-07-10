@@ -21,9 +21,9 @@ export default function Login({ onSuccess }: LoginProps) {
       onSuccess?.();
     } catch (err: any) {
       if (err.code === 'account_disabled') {
-        setError('Account is deactivated. Contact your manager.');
+        setError('Akun dinonaktifkan. Hubungi atasan Anda.');
       } else {
-        setError(err.message || 'Invalid username or password');
+        setError(err.message || 'Nama pengguna atau kata sandi salah');
       }
     } finally {
       setLoading(false);
@@ -34,11 +34,11 @@ export default function Login({ onSuccess }: LoginProps) {
     <div className="login-screen">
       <div className="login-card">
         <h1 className="login-title">Makmur</h1>
-        <p className="login-subtitle">Inventory Scanner</p>
+        <p className="login-subtitle">Pemindai Inventaris</p>
         <form onSubmit={handleSubmit} className="login-form">
           {error && <div className="login-error">{error}</div>}
           <div className="form-group">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="username">Nama Pengguna</label>
             <input
               id="username"
               className="form-input"
@@ -50,7 +50,7 @@ export default function Login({ onSuccess }: LoginProps) {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">Kata Sandi</label>
             <input
               id="password"
               className="form-input"
@@ -61,7 +61,7 @@ export default function Login({ onSuccess }: LoginProps) {
             />
           </div>
           <button className="btn btn-primary login-btn" type="submit" disabled={loading}>
-            {loading ? 'Signing in…' : 'Sign In'}
+            {loading ? 'Masuk…' : 'Masuk'}
           </button>
         </form>
       </div>

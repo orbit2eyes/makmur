@@ -19,12 +19,12 @@ async function apiFetch(url: string, options?: RequestInit): Promise<Response> {
     const res = await fetch(url, { ...options, headers });
     if (res.status === 401) {
       redirectLogin();
-      throw { error: 'unauthorized', message: 'Session expired' };
+      throw { error: 'unauthorized', message: 'Sesi berakhir' };
     }
     return res;
   } catch (err: unknown) {
     if ((err as any)?.error === 'unauthorized') throw err;
-    throw { error: 'network_error', message: err instanceof Error ? err.message : 'Network request failed' };
+    throw { error: 'network_error', message: err instanceof Error ? err.message : 'Permintaan jaringan gagal' };
   }
 }
 
@@ -34,7 +34,7 @@ async function handleError(res: Response): Promise<never> {
     throw { status: res.status, ...body };
   } catch (err: unknown) {
     if ((err as any)?.status) throw err;
-    throw { error: 'http_error', message: `Request failed (${res.status})` };
+    throw { error: 'http_error', message: `Permintaan gagal (${res.status})` };
   }
 }
 

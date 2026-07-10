@@ -185,7 +185,7 @@ function LoginGate() {
   }, [token])
 
   if (checking) {
-    return <div className="app"><div className="loading-screen">Loading…</div></div>
+    return <div className="app"><div className="loading-screen">Memuat...</div></div>
   }
 
   if (token) {

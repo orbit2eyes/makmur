@@ -26,7 +26,7 @@ export default function SetupPage() {
           }
         }
       })
-      .catch(() => setError('Failed to check setup status'))
+      .catch(() => setError('Gagal memeriksa status pengaturan'))
       .finally(() => setLoading(false))
   }, [])
 
@@ -37,12 +37,12 @@ export default function SetupPage() {
     setError('')
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match')
+      setError('Kata sandi tidak cocok')
       return
     }
 
     if (password.length < 8) {
-      setError('Password must be at least 8 characters')
+      setError('Kata sandi minimal 8 karakter')
       return
     }
 
@@ -51,21 +51,21 @@ export default function SetupPage() {
       await setupRegister({ token: qrToken, username, password })
       window.location.href = '/login'
     } catch (err: any) {
-      setError(err.message || 'Registration failed')
+      setError(err.message || 'Registrasi gagal')
     } finally {
       setSubmitting(false)
     }
   }
 
-  if (loading) return <div className="loading-screen">Loading…</div>
+  if (loading) return <div className="loading-screen">Memuat...</div>
 
   if (needsSetup === false) {
     return (
       <div className="setup-screen">
         <div className="setup-card">
-          <h1 className="setup-title">Already Set Up</h1>
-          <p className="setup-subtitle">This system has been initialized.</p>
-          <a href="/login" className="btn btn-primary setup-link">Go to Login</a>
+          <h1 className="setup-title">Sudah Diatur</h1>
+          <p className="setup-subtitle">Sistem ini sudah diinisialisasi.</p>
+          <a href="/login" className="btn btn-primary setup-link">Ke Halaman Masuk</a>
         </div>
       </div>
     )
@@ -74,12 +74,12 @@ export default function SetupPage() {
   return (
     <div className="setup-screen">
       <div className="setup-card">
-        <h1 className="setup-title">Setup Your System</h1>
-        <p className="setup-subtitle">Create the first admin account</p>
+        <h1 className="setup-title">Atur Sistem Anda</h1>
+        <p className="setup-subtitle">Buat akun admin pertama</p>
 
         {qrUrl && (
           <div className="setup-qr-section">
-            <p className="setup-qr-label">Scan this QR code to open setup on mobile:</p>
+            <p className="setup-qr-label">Pindai kode QR ini untuk membuka pengaturan di ponsel:</p>
             <img src={qrUrl} alt="Setup QR code" className="setup-qr" />
           </div>
         )}
@@ -87,7 +87,7 @@ export default function SetupPage() {
         <form onSubmit={handleSubmit} className="setup-form">
           {error && <div className="login-error">{error}</div>}
           <div className="form-group">
-            <label htmlFor="setup-username">Username</label>
+            <label htmlFor="setup-username">Nama Pengguna</label>
             <input
               id="setup-username"
               className="form-input"
@@ -99,7 +99,7 @@ export default function SetupPage() {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="setup-password">Password</label>
+            <label htmlFor="setup-password">Kata Sandi</label>
             <input
               id="setup-password"
               className="form-input"
@@ -110,7 +110,7 @@ export default function SetupPage() {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="setup-confirm">Confirm Password</label>
+            <label htmlFor="setup-confirm">Konfirmasi Kata Sandi</label>
             <input
               id="setup-confirm"
               className="form-input"
@@ -121,7 +121,7 @@ export default function SetupPage() {
             />
           </div>
           <button className="btn btn-primary setup-btn" type="submit" disabled={submitting}>
-            {submitting ? 'Creating…' : 'Create Admin Account'}
+            {submitting ? 'Membuat...' : 'Buat Akun Admin'}
           </button>
         </form>
       </div>

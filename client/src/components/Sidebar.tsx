@@ -13,11 +13,11 @@ function getNavItems(role?: string): { view: View; label: string; icon: string }
   const items: { view: View; label: string; icon: string }[] = []
 
   if (role === 'staff' || role === 'admin') {
-    items.push({ view: 'products', label: 'Products', icon: '\u{1F4CB}' })
-    items.push({ view: 'scan', label: 'Scan', icon: '\u{1F4F7}' })
+    items.push({ view: 'products', label: 'Produk', icon: '\u{1F4CB}' })
+    items.push({ view: 'scan', label: 'Pindai', icon: '\u{1F4F7}' })
   }
   if (role === 'manager' || role === 'admin') {
-    items.push({ view: 'users', label: 'Staff Management', icon: '\u{1F465}' })
+    items.push({ view: 'users', label: 'Manajemen Staf', icon: '\u{1F465}' })
   }
 
   return items
@@ -52,7 +52,7 @@ export default function Sidebar({ view, onNavigate, open, onToggle }: SidebarPro
           <span className="sidebar-user">
             {user?.username} <span className="sidebar-role">({user?.role})</span>
           </span>
-          <button className="btn btn-logout sidebar-logout" onClick={logout}>Logout</button>
+          <button className="btn btn-logout sidebar-logout" onClick={logout}>Keluar</button>
         </div>
       </aside>
     </>

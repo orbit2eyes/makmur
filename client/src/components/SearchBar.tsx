@@ -36,7 +36,7 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
     <div className="search-bar">
       <input
         type="text"
-        placeholder="Search products..."
+        placeholder="Cari produk..."
         value={query}
         onChange={handleChange}
         className="search-input"

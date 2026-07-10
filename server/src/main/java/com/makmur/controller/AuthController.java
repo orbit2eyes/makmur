@@ -37,7 +37,7 @@ public class AuthController {
         if (username == null || password == null || username.isBlank() || password.isBlank()) {
             Map<String, Object> err = new LinkedHashMap<>();
             err.put("error", "validation_error");
-            err.put("message", "Username and password are required");
+            err.put("message", "Nama pengguna dan kata sandi wajib diisi");
             return ResponseEntity.status(422).body(err);
         }
 
@@ -45,14 +45,14 @@ public class AuthController {
         if (user == null || !passwordEncoder.matches(password, user.getPasswordHash())) {
             Map<String, Object> err = new LinkedHashMap<>();
             err.put("error", "invalid_credentials");
-            err.put("message", "Invalid username or password");
+            err.put("message", "Nama pengguna atau kata sandi salah");
             return ResponseEntity.status(401).body(err);
         }
 
         if (!user.isActive()) {
             Map<String, Object> err = new LinkedHashMap<>();
             err.put("error", "account_disabled");
-            err.put("message", "Account is deactivated. Contact your manager.");
+            err.put("message", "Akun dinonaktifkan. Hubungi atasan Anda.");
             return ResponseEntity.status(403).body(err);
         }
 
@@ -79,7 +79,7 @@ public class AuthController {
         if (username == null || password == null || username.isBlank() || password.isBlank()) {
             Map<String, Object> err = new LinkedHashMap<>();
             err.put("error", "validation_error");
-            err.put("message", "Username and password are required");
+            err.put("message", "Nama pengguna dan kata sandi wajib diisi");
             return ResponseEntity.status(422).body(err);
         }
 
@@ -93,7 +93,7 @@ public class AuthController {
         }
 
         if (callerRole == null) {
-            throw new ForbiddenException("Access denied");
+            throw new ForbiddenException("Akses ditolak");
         }
 
         // Enforce role assignment rules server-side
@@ -110,13 +110,13 @@ public class AuthController {
                 }
                 break;
             default:
-                throw new ForbiddenException("Access denied");
+                throw new ForbiddenException("Akses ditolak");
         }
 
         if (userRepository.findByUsername(username).isPresent()) {
             Map<String, Object> err = new LinkedHashMap<>();
             err.put("error", "duplicate_username");
-            err.put("message", "Username " + username + " already exists");
+            err.put("message", "Nama pengguna " + username + " sudah ada");
             return ResponseEntity.status(409).body(err);
         }
 

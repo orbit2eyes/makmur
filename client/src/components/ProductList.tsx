@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { fetchProducts } from '../api'
 import type { Product } from '../types'
+import { formatPrice } from '../utils'
 
 interface ProductListProps {
   searchResults: Product[] | null
@@ -22,8 +23,8 @@ export default function ProductList({ searchResults, onSelect }: ProductListProp
   const display = searchResults !== null ? searchResults : products
   const isLow = (s: number) => s < 5
 
-  if (loading) return <div className="loading">Loading...</div>
-  if (display.length === 0) return <div className="empty">No products yet</div>
+  if (loading) return <div className="loading">Memuat...</div>
+  if (display.length === 0) return <div className="empty">Belum ada produk</div>
 
   return (
     <div className="product-list">
@@ -35,7 +36,7 @@ export default function ProductList({ searchResults, onSelect }: ProductListProp
           </div>
           <div className="product-row-stats">
             <span className={`product-row-stock${isLow(p.stock) ? ' stock-low' : ''}`}>{p.stock}</span>
-            <span className="product-row-price">${p.price.toFixed(2)}</span>
+            <span className="product-row-price">{formatPrice(p.price)}</span>
           </div>
         </div>
       ))}

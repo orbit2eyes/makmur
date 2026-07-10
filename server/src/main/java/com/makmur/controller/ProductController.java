@@ -49,7 +49,7 @@ public class ProductController {
         if (product.isEmpty()) {
             Map<String, String> body = new LinkedHashMap<>();
             body.put("error", "not_found");
-            body.put("message", "Product with barcode " + barcode + " not found");
+            body.put("message", "Produk dengan barcode " + barcode + " tidak ditemukan");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
         }
         return ResponseEntity.ok(product.get());
@@ -70,7 +70,7 @@ public class ProductController {
             fieldErrors.put("barcode", "Barcode must be exactly 13 digits");
         }
         if (name == null || name.trim().isEmpty()) {
-            fieldErrors.put("name", "Product name is required");
+            fieldErrors.put("name", "Nama produk wajib diisi");
         }
         if (priceObj == null) {
             fieldErrors.put("price", "Price must be a positive number");
@@ -78,7 +78,7 @@ public class ProductController {
             try {
                 double price = Double.parseDouble(priceObj.toString());
                 if (price <= 0) {
-                    fieldErrors.put("price", "Price must be a positive number");
+                    fieldErrors.put("price", "Harga harus berupa angka positif");
                 }
             } catch (NumberFormatException e) {
                 fieldErrors.put("price", "Price must be a positive number");
@@ -88,7 +88,7 @@ public class ProductController {
             try {
                 int stock = Integer.parseInt(stockObj.toString());
                 if (stock < 0) {
-                    fieldErrors.put("stock", "Stock must be a non-negative integer");
+                    fieldErrors.put("stock", "Stok harus berupa bilangan bulat non-negatif");
                 }
             } catch (NumberFormatException e) {
                 fieldErrors.put("stock", "Stock must be a non-negative integer");
@@ -107,7 +107,7 @@ public class ProductController {
         if (existing.isPresent()) {
             Map<String, Object> err = new LinkedHashMap<>();
             err.put("error", "duplicate_barcode");
-            err.put("message", "Product with barcode " + barcode + " already exists");
+            err.put("message", "Produk dengan barcode " + barcode + " sudah ada");
             err.put("existing_product", existing.get());
             return ResponseEntity.status(HttpStatus.CONFLICT).body(err);
         }
@@ -128,7 +128,7 @@ public class ProductController {
         if (existing.isEmpty()) {
             Map<String, String> err = new LinkedHashMap<>();
             err.put("error", "not_found");
-            err.put("message", "Product " + barcode + " not found");
+            err.put("message", "Produk " + barcode + " tidak ditemukan");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
         }
 
@@ -172,7 +172,7 @@ public class ProductController {
             Map<String, Object> err = new LinkedHashMap<>();
             err.put("error", "validation_error");
             Map<String, String> fields = new LinkedHashMap<>();
-            fields.put("stock", "Stock cannot be negative");
+            fields.put("stock", "Stok tidak boleh negatif");
             err.put("fields", fields);
             return ResponseEntity.status(422).body(err);
         }

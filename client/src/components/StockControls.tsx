@@ -22,7 +22,7 @@ export default function StockControls({ product, onUpdate }: StockControlsProps)
       setError('')
     } catch (err: unknown) {
       const apiErr = err as { status?: number }
-      if (apiErr.status === 422) setError('Cannot update stock to negative value')
+      if (apiErr.status === 422) setError('Tidak dapat memperbarui stok menjadi negatif')
     }
   }
 
@@ -32,7 +32,7 @@ export default function StockControls({ product, onUpdate }: StockControlsProps)
     e.preventDefault()
     const v = Number(value)
     if (isNaN(v) || !Number.isInteger(v) || v < 0) {
-      setError('Enter a non-negative integer')
+      setError('Masukkan bilangan bulat non-negatif')
       return
     }
     setShowInput(false)
@@ -46,9 +46,9 @@ export default function StockControls({ product, onUpdate }: StockControlsProps)
         <button className="btn btn-stock" onClick={() => handleDelta(1)}>+1</button>
         <button className="btn btn-stock" onClick={() => handleDelta(-1)} disabled={product.stock <= 0}>-1</button>
         <button className="btn btn-secondary" onClick={() => setShowInput(!showInput)}>
-          {showInput ? 'Cancel' : 'Update Stock'}
+          {showInput ? 'Batal' : 'Perbarui Stok'}
         </button>
-        {flash && <span className="stock-updated">Updated!</span>}
+        {flash && <span className="stock-updated">Tersimpan!</span>}
       </div>
       {showInput && (
         <form className="stock-absolute" onSubmit={handleAbsolute}>
@@ -58,11 +58,11 @@ export default function StockControls({ product, onUpdate }: StockControlsProps)
             step="1"
             value={value}
             onChange={e => setValue(e.target.value)}
-            placeholder="New stock count"
+            placeholder="Jumlah stok baru"
             className="form-input"
             autoFocus
           />
-          <button type="submit" className="btn btn-primary">Set</button>
+          <button type="submit" className="btn btn-primary">Atur</button>
         </form>
       )}
       {error && <span className="form-error">{error}</span>}

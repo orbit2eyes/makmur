@@ -101,7 +101,7 @@ class AuthControllerTest {
 
         assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
         assertThat(resp.getBody()).containsEntry("error", "invalid_credentials");
-        assertThat(resp.getBody()).containsEntry("message", "Invalid username or password");
+        assertThat(resp.getBody()).containsEntry("message", "Nama pengguna atau kata sandi salah");
     }
 
     @Test
@@ -115,7 +115,7 @@ class AuthControllerTest {
         assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
         assertThat(resp.getBody()).containsEntry("error", "invalid_credentials");
         // Same message as invalid password — no user enumeration
-        assertThat(resp.getBody()).containsEntry("message", "Invalid username or password");
+        assertThat(resp.getBody()).containsEntry("message", "Nama pengguna atau kata sandi salah");
     }
 
     @Test
@@ -128,7 +128,7 @@ class AuthControllerTest {
 
         assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
         assertThat(resp.getBody()).containsEntry("error", "account_disabled");
-        assertThat(resp.getBody()).containsEntry("message", "Account is deactivated. Contact your manager.");
+        assertThat(resp.getBody()).containsEntry("message", "Akun dinonaktifkan. Hubungi atasan Anda.");
     }
 
     @Test

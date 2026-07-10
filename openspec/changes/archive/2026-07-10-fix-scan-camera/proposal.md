@@ -9,6 +9,10 @@ status: planning
 
 The barcode scan view fails silently on devices without a rear camera (iPads, laptops) and locks up after one successful scan, forcing staff to reload or switch devices. This change adds camera fallback from `facingMode: 'environment'` to unrestricted `{ video: true }`, replaces 2 generic error messages with 5 distinct actionable messages, fixes the single-scan lock in `scannedRef.current`, adds a `.catch()` handler to the zxing polyfill import, and sets a 10s timeout on the video readyState polling loop.
 
+## Why
+
+Camera detection is the core input path of the app. When it fails on first try — no rear camera, permission denied, camera in use, insecure origin, or network failure for the polyfill — staff cannot scan. Each failure mode needs a distinct diagnostic path. Without these fixes, users on iPads, laptops, or behind restrictive networks are blocked from using the app entirely.
+
 ## Problem
 
 Staff open the scan view and the camera does not start. On an iPad it silently fails — no rear camera, no scan. On a laptop the same thing. When the camera is in use by another tab, the error reads "camera unavailable" with no hint why. After a successful scan the view locks — the next product cannot be scanned without navigating away and back. If the network is slow and the barcode polyfill fails to load, the entire view crashes rather than showing manual entry. The scan feature is the core of the app; when it does not work on the first try, trust erodes fast.
@@ -20,6 +24,11 @@ Staff open the scan view and the camera does not start. On an iPad it silently f
 3. **Continuous scan support** — reset `scannedRef.current` after result display so the next barcode can be decoded without navigation.
 4. **Network resilience for zxing polyfill** — add `.catch()` handler to the dynamic import; on failure show manual entry form instead of crashing.
 5. **Video readyState timeout** — add 10s timeout to the polling loop that waits for `video.readyState >= 2`, with a user-facing timeout message.
+
+## What Changes
+
+1. `Viewfinder.tsx` — camera init now catches `OverconstrainedError` and retries with `{ video: true }`. 5 distinct error messages in a constant map. zxing dynamic import wrapped in try-catch with manual entry fallback. 10s timeout on video readyState polling. All tracks properly stopped on all exit paths.
+2. No server changes, no new dependencies.
 
 ## Affected Domains
 

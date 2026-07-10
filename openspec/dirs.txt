@@ -1,0 +1,44 @@
+.
+├── changes
+│   └── archive
+│       ├── 2026-07-08-makmur-0
+│       │   ├── AGENTS.md
+│       │   ├── analysis.md
+│       │   ├── apply-progress.md
+│       │   ├── business-logic.md
+│       │   ├── current-state-context.md
+│       │   ├── current-state-impact.md
+│       │   ├── design.md
+│       │   ├── documentation-review.md
+│       │   ├── ISSUES.md
+│       │   ├── prd.md
+│       │   ├── proposal.md
+│       │   ├── specs
+│       │   │   ├── auth
+│       │   │   │   └── spec.md
+│       │   │   ├── product
+│       │   │   │   └── spec.md
+│       │   │   ├── scan
+│       │   │   │   └── spec.md
+│       │   │   └── stock
+│       │   │       └── spec.md
+│       │   ├── tasks.md
+│       │   ├── testing.md
+│       │   ├── user-stories.md
+│       │   ├── verify.md
+│       │   └── verify-report.md
+│       └── 2026-07-10-fix-scan-camera
+│           ├── design.md
+│           ├── ISSUES.md
+│           ├── prd.md
+│           ├── proposal.md
+│           ├── specs
+│           │   └── scan
+│           │       └── spec.md
+│           ├── tasks.md
+│           └── user-stories.md
+├── config.yaml
+├── dirs.txt
+└── specs
+
+13 directories, 29 files
