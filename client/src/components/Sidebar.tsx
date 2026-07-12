@@ -9,15 +9,15 @@ interface SidebarProps {
   onToggle: () => void
 }
 
-function getNavItems(role?: string): { view: View; label: string; icon: string }[] {
-  const items: { view: View; label: string; icon: string }[] = []
+function getNavItems(role?: string): { view: View; label: string }[] {
+  const items: { view: View; label: string }[] = []
 
   if (role === 'staff' || role === 'admin') {
-    items.push({ view: 'products', label: 'Produk', icon: '\u{1F4CB}' })
-    items.push({ view: 'scan', label: 'Pindai', icon: '\u{1F4F7}' })
+    items.push({ view: 'products', label: 'Produk' })
+    items.push({ view: 'scan', label: 'Pindai' })
   }
   if (role === 'manager' || role === 'admin') {
-    items.push({ view: 'users', label: 'Manajemen Staf', icon: '\u{1F465}' })
+    items.push({ view: 'users', label: 'Manajemen Staf' })
   }
 
   return items
@@ -42,7 +42,6 @@ export default function Sidebar({ view, onNavigate, open, onToggle }: SidebarPro
               className={`sidebar-nav-item ${view === item.view ? 'sidebar-nav-active' : ''}`}
               onClick={() => { onNavigate(item.view); onToggle() }}
             >
-              <span className="sidebar-nav-icon">{item.icon}</span>
               {item.label}
             </button>
           ))}

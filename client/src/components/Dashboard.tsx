@@ -33,17 +33,14 @@ export default function Dashboard() {
       <h2 className="dashboard-heading">Dasbor</h2>
       <div className="dashboard-cards">
         <div className="dash-card">
-          <span className="dash-card-icon">{String.fromCodePoint(0x1F4E6)}</span>
           <span className="dash-card-value">{stats?.totalProducts ?? 0}</span>
           <span className="dash-card-label">Total Produk</span>
         </div>
         <div className="dash-card">
-          <span className="dash-card-icon">{String.fromCodePoint(0x1F4CA)}</span>
           <span className="dash-card-value">{stats?.totalStock ?? 0}</span>
           <span className="dash-card-label">Total Stok</span>
         </div>
         <div className="dash-card">
-          <span className="dash-card-icon">{String.fromCodePoint(0x26A0, 0xFE0F)}</span>
           <span className="dash-card-value">{stats?.lowStockItems ?? 0}</span>
           <span className="dash-card-label">Item Stok Rendah</span>
         </div>
