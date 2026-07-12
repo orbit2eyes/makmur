@@ -2,9 +2,9 @@
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; color: #222; -webkit-font-smoothing: antialiased; }
 
 /* ===== Layout ===== */
-.app-layout { display: flex; flex-direction: column; min-height: 100vh; }
-.app-main-area { flex: 1; margin-left: 0; }
-.app-content { padding: 20px; max-width: 640px; margin: 0 auto; width: 100%; }
+.app-layout { display: flex; min-height: 100vh; }
+.app-main-area { flex: 1; margin-left: 0; min-height: 100vh; }
+.app-content { padding: 20px; max-width: 640px; }
 
 /* ===== Topbar ===== */
 .topbar {
@@ -12,7 +12,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
   border-bottom: 1px solid #e0e0e0;
   width: 100%;
   height: 64px;
-  flex-shrink: 0;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -330,8 +329,122 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
   font-weight: 600;
 }
 
-/* ===== Mobile top bar (hidden - topbar replaces) ===== */
+/* ===== Sidebar ===== */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 220px;
+  height: 100vh;
+  background: #1e293b;
+  color: #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 16px 16px;
+  border-bottom: 1px solid #334155;
+}
+
+.sidebar-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #60a5fa;
+}
+
+.sidebar-close { display: none; }
+
+.sidebar-nav {
+  flex: 1;
+  padding: 12px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sidebar-nav-item {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  padding: 12px 12px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.sidebar-nav-item:hover { background: #334155; color: #e2e8f0; }
+.sidebar-nav-active { background: #2563eb; color: #fff; }
+.sidebar-nav-active:hover { background: #2563eb; color: #fff; }
+
+.sidebar-nav-icon { font-size: 1.2rem; }
+
+.sidebar-footer {
+  padding: 16px;
+  border-top: 1px solid #334155;
+}
+
+.sidebar-user {
+  display: block;
+  font-size: 0.85rem;
+  color: #94a3b8;
+  margin-bottom: 8px;
+}
+
+.sidebar-role { color: #64748b; }
+
+.sidebar-logout {
+  width: 100%;
+  background: #334155;
+  border: none;
+  color: #e2e8f0;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  min-height: 36px;
+}
+
+.sidebar-logout:hover { background: #475569; }
+
+/* Sidebar overlay for mobile */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 99;
+}
+
+/* ===== Mobile top bar ===== */
 .mobile-topbar { display: none; }
+
+.hamburger {
+  background: none;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #222;
+  border-radius: 1px;
+}
 
 /* ===== Dashboard ===== */
 .dashboard { padding: 0; }
@@ -349,7 +462,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
   box-shadow: 0 1px 3px rgba(0,0,0,0.08);
 }
 
-/* dash-card-icon removed */
+.dash-card-icon { font-size: 1.8rem; margin-bottom: 4px; }
 .dash-card-value { font-size: 1.8rem; font-weight: 800; color: #222; }
 .dash-card-label { font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 0.3px; }
 
@@ -360,7 +473,34 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 
 /* ===== Responsive: mobile ===== */
 @media (max-width: 767px) {
+  .app-main-area { margin-left: 0; }
   .app-content { padding: 12px; }
+
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+  }
+
+  .sidebar-open { transform: translateX(0); }
+  .sidebar-close { display: block; background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer; padding: 4px; }
+  .sidebar-close:hover { color: #fff; }
+  .sidebar-overlay { display: block; }
+
+  .mobile-topbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    background: #fff;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .mobile-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #2563eb;
+  }
+
   .dashboard-cards { grid-template-columns: 1fr; }
 }
 
@@ -526,7 +666,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 
 /* Responsive: desktop */
 @media (min-width: 1280px) {
-  .app-content { max-width: 960px; }
+  .app-content { max-width: 720px; }
 }
 
 /* ===== Scan Result Dialog ===== */

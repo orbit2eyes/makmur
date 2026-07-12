@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { useAuth } from './context/AuthContext'
 import { fetchProduct, searchProducts, createProduct, getSetupStatus, updateStock } from './api'
 import type { Product } from './types'
-import Sidebar from './components/Sidebar'
+import Topbar from './components/Topbar'
 import Dashboard from './components/Dashboard'
 import ProductList from './components/ProductList'
 import SearchBar from './components/SearchBar'
@@ -35,7 +35,6 @@ function MainApp() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [scannedBarcode, setScannedBarcode] = useState<string | null>(null)
   const [searchResults, setSearchResults] = useState<Product[] | null>(null)
-  const [sidebarOpen, setSidebarOpen] = useState(false)
   const [autoReturn, setAutoReturn] = useState(0)
   const [scanResult, setScanResult] = useState<{ product?: Product; barcode: string } | null>(null)
 
@@ -162,14 +161,8 @@ function MainApp() {
 
   return (
     <div className="app-layout">
-      <Sidebar view={view} onNavigate={navigate} open={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} />
+      <Topbar view={view} onNavigate={navigate} />
       <div className="app-main-area">
-        <div className="mobile-topbar">
-          <button className="hamburger" onClick={() => setSidebarOpen(true)}>
-            <span /><span /><span />
-          </button>
-          <h1 className="mobile-title">Makmur</h1>
-        </div>
         <main className="app-content">
           {view === 'dashboard' && <Dashboard />}
           {view === 'products' && renderProducts()}
