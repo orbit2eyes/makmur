@@ -1,6 +1,6 @@
 import { useAuth } from '../context/AuthContext'
 
-type View = 'dashboard' | 'products' | 'scan' | 'detail' | 'create' | 'users'
+type View = 'dashboard' | 'products' | 'scan' | 'detail' | 'create' | 'users' | 'scan-result'
 
 interface SidebarProps {
   view: View

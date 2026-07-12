@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useAuth } from './context/AuthContext'
-import { fetchProduct, searchProducts, createProduct, getSetupStatus } from './api'
+import { fetchProduct, searchProducts, createProduct, getSetupStatus, updateStock } from './api'
 import type { Product } from './types'
 import Sidebar from './components/Sidebar'
 import Dashboard from './components/Dashboard'
@@ -15,9 +15,10 @@ import Login from './components/Login'
 import ProtectedRoute from './components/ProtectedRoute'
 import SetupPage from './components/SetupPage'
 import UserList from './components/UserList'
+import ScanResultDialog from './components/ScanResultDialog'
 import './index.css'
 
-type View = 'dashboard' | 'products' | 'scan' | 'detail' | 'create' | 'users'
+type View = 'dashboard' | 'products' | 'scan' | 'detail' | 'create' | 'users' | 'scan-result'
 
 function MainApp() {
   const { user, logout } = useAuth()
@@ -36,6 +37,7 @@ function MainApp() {
   const [searchResults, setSearchResults] = useState<Product[] | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [autoReturn, setAutoReturn] = useState(0)
+  const [scanResult, setScanResult] = useState<{ product?: Product; barcode: string } | null>(null)
 
   useEffect(() => {
     if (view === 'products') setSearchResults(null)
@@ -68,14 +70,30 @@ function MainApp() {
 
   const handleScan = useCallback(async (barcode: string) => {
     const product = await fetchProduct(barcode)
-    if (product) {
-      setSelectedProduct(product)
-      setView('detail')
-      setAutoReturn(2)
-    } else {
-      setScannedBarcode(barcode)
-      setView('create')
-    }
+    setScanResult(product ? { product, barcode } : { barcode })
+    setView('scan-result')
+  }, [])
+
+  const handleAddStock = useCallback(async () => {
+    if (!scanResult) return
+    await updateStock(scanResult.barcode, { delta: 1 })
+    setView('scan')
+  }, [scanResult])
+
+  const handleViewDetail = useCallback(() => {
+    if (!scanResult?.product) return
+    setSelectedProduct(scanResult.product)
+    setView('detail')
+  }, [scanResult])
+
+  const handleAddProduct = useCallback(() => {
+    if (!scanResult) return
+    setScannedBarcode(scanResult.barcode)
+    setView('create')
+  }, [scanResult])
+
+  const handleRescan = useCallback(() => {
+    setView('scan')
   }, [])
 
   const handleProductCreated = useCallback((product: Product) => {
@@ -159,6 +177,17 @@ function MainApp() {
           {view === 'detail' && renderDetail()}
           {view === 'create' && renderCreate()}
           {view === 'users' && renderUsers()}
+          {view === 'scan-result' && scanResult && (
+            <ScanResultDialog
+              mode={scanResult.product ? 'found' : 'not-found'}
+              product={scanResult.product}
+              barcode={scanResult.barcode}
+              onAddStock={handleAddStock}
+              onViewDetail={handleViewDetail}
+              onAddProduct={handleAddProduct}
+              onRescan={handleRescan}
+            />
+          )}
         </main>
       </div>
     </div>
